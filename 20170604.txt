@@ -1,0 +1,39 @@
+1.	应用UI卡顿原理
+	App开发的帧率性能目标就是要保持在60fps，也就是 60帧/秒 16ms/帧
+	也就是准则：尽量保证每次在16ms内处理完所有的cpu与Gpu计算，绘制，渲染等操作，否则会造成丢帧卡顿问题。
+
+2.	GC垃圾回收机制（Garbage Collection） （gen0 第0代回收 代（generation） ）
+	void SomeMethod()
+        {
+            object o1 = new Object();
+            object o2 = new Object();
+
+            o1.ToString();
+            GC.Collect(); // this forces o2 into Gen1, because it's still referenced
+            o2.ToString();
+        }
+	如果没有GC.Collect()，o1和o2都将在下一次垃圾自动回收中进入Gen0，但是加上GC.Collect()，o2将被标记为	Gen1，也就是0代回收没有释放o2占据的内存。
+
+3.	常见卡顿原因：
+	1.人为在UI线程中做轻微耗时操作，导致UI线程卡顿；
+
+	2.布局Layout过于复杂，无法在16ms内完成渲染；
+
+	3.同一时间动画执行的次数过多，导致CPU或GPU负载过重；
+
+	4.View过度绘制，导致某些像素在同一帧时间内被绘制多次，从而使CPU或GPU负载过重；
+
+	5.View频繁的触发measure、layout，导致measure、layout累计耗时过多及整个View频繁的重新渲染；
+
+	6.内存频繁触发GC过多（同一帧中频繁创建内存），导致暂时阻塞渲染操作；
+
+	7.冗余资源及逻辑等导致加载和执行缓慢；
+
+	8.臭名昭著的ANR。
+
+4.	ANR（Application Not Responding）如何避免：
+	1.运行在主线程里的任何方法都尽可能少做事情。特别是，Activity应该在它的关键生命周期方法（如onCreate()和			onResume()）里尽可能少的去做创建操作。潜在的耗时操作，例如网络或数据库操作，或者高耗时的计算如改变位图尺	寸，应该	在子线程里（或者以数据库操作为例，通过异步请求的方式）来完成。然而，不是说你的主线程阻	塞在那里	等待子线程的完成——也不是调用Thread.wait()或是Thread.sleep()。替代的方法是，主线程应该为子线程提供一	个Handler，以便完成时能够提交给主线程。以这种方式设计你的应用程序，将能保证你的主线程保持对输入的响应性	并能避免由于5秒输入事件的超时引发的	ANR对话框。这种做法应该在其它显示UI的线程里效仿，因为它们都受	相同的超时影响。
+	2.如果你的应用程序为响应用户输入正在后台工作的话，可以显示工作的进度（ProgressBar和ProgressDialog对这	种情况来说很有用）。
+	3.如果你的应用程序有一个耗时的初始化过程的话，考虑可以显示一个Splash Screen或者快速显示主画面并异步来填	充这些信息。在这两种情况下，你都应该显示正在进行的进度，以免用户认为应用程序被冻结了。
+
+5.	C:\android_SDK\tools\hierarchyviewer.bat可以进行UI布局复杂程度及冗余等分析。
