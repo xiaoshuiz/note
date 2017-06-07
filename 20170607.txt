@@ -1,0 +1,39 @@
+1.	webview
+	如果需要使用网页中的confrim()/alert()/prompt()函数生效，需要设置WebChromeClient!
+
+2.	webview.setWebChromeClient
+	在使用onJsAlert来拦截alert对话框时，如果不需要再谈出alert对话框，一定要return true，在return false以			后，会依然调用系统的默认处理来弹出对话框的。
+
+3.	webview.setWebChromeClient
+	如果我们return true，则需要在处理完成以后调用JsResult.confirm()或者JsResule.cansel()来告诉WebView我	们点钟哪个按钮来取消程序对话框，否则再次点击按钮将会失败。
+
+
+4.	webview.loadData
+	String summary = "<html><body>You scored <b>192</b> points.</body></html>";
+        mWebView.loadData(summary, "text/html", "utf-8");
+	在使用loadData时，在数据里面不能出现英文字符：’#’, ‘%’, ‘\’ , ‘?’ 这四个字符，如果有的话可以用 	%23, %25, %27, %3f，这些字符来替换，在平时测试时，你的数据时，你的数据里含有这些字符，但不会出问题，当	出问题时，你可以替换下。 
+	直接使用这四个字符会造成的问题如下：
+	%：会报找不到页面错误，页面全是乱码。
+	#，会让你的goBack失效，但canGoBAck是可以使用的。于是就会产生返回按钮生效，但不能返回的情况。
+	\ 和? 我在转换时，会报错，因为它会把\当作转义符来使用，如果用两级转义，也不生效，我是对它无语了。
+
+5.	由于webview.loadData()是运行在主线程的，所以如果代码很长，会卡死主线程，所以android提供了一个专门用来	转码的函数：URLEncoder.encode(String s, String charsetName)。它能将冲突的字符进行转义，然后再传给	webview，这样webview在加载时就不会有冲突了。
+
+6.	webview.loadDataWithBaseURL
+	更常用
+	String baseURL = "http://img6.ph.126.net";
+        String data = "漂亮MM <img src='hBiG96B8egigBULxUWcOpA==/109212290980771276.jpg'>";
+        mWebView.loadDataWithBaseURL(baseURL, data, "text/html", "utf-8", null);
+	String baseUrl：基准URL，不需要可以传null，它的意思是，如果data中的url是相对地址，则就会加上基准url来	拼接出完整的地址，比如baseUrl是http://img6.ph.126.net，data中有个Img标签，它的内容是：<img 	src='hBiG96B8egigBULxUWcOpA==/109212290980771276.jpg'>，很明显src的地址不是本地地址也不是在线地址，	那它就是一个相对地址，所以加上baseUrl以后才是它的完整地址：	http://img6.ph.126.net/hBiG96B8egigBULxUWcOpA==/109212290980771276.jpg
+
+7.	三种地址加载情况
+	String baseURL = "http://img6.ph.126.net";
+        String data = "绝对网页地址:" +
+                "<img src='http://img3.3lian.com/2013/v8/72/d/61.jpg'>" +
+                "本地地址:" +
+                "<img src='file:///android_asset/s07.jpg'>" +
+                "相对地址:" +
+                "<img src='hBiG96B8egigBULxUWcOpA==/109212290980771276.jpg'>";
+
+        mWebView.loadDataWithBaseURL(baseURL, data, "text/html", "utf-8", null);
+
