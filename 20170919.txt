@@ -1,0 +1,201 @@
+1.从架构图上看，android分为几个层？
+5个，linux内核层，硬件抽象层，系统运行层或c/c++核心库，applicationframework开发框架层，application核心应用程序层。
+2.android中Theme不可以继承
+3.style可以作用在activity上
+4.android应用程序开发中，可以通过getmetrics来获得屏幕的属性，从而取得屏幕的宽度和高度。
+5.NDK提供了一份稳定、功能有限的API头文件生命
+6.NDK将是Android平台支持C开发的开端
+7.Android系统对下列哪些对象提供了资源池？
+注意是android系统提供的，
+Message提供了消息池，有静态方法Obtain从消息池中取对象；
+Thread默认不提供资源池，除非使用线程池ThreadPool管理；
+AsynTask是线程池改造的，池里 默认提供（核数+1）个线程进行并发操作，最大支持（核数  * 2 + 1）个线程，超过后会丢弃其他任务；
+Looper，每个Looper创建时创建一个消息队列和线程对象，也不是资源池；
+因此答案为AC
+
+8.android生命周期见图
+
+Activity整个生命周期的4种状态、7个重要方法和3个嵌套循环
+
+1>   四种状态
+
+      活动（Active/Running）状态
+当Activity运行在屏幕前台(处于当前任务活动栈的最上面),此时它获取了焦点能响应用户的操作,属于运行状态，同一个时刻只会有一个Activity 处于活动(Active)或运行
+
+(Running)状态
+
+    暂停(Paused)状态
+当Activity失去焦点但仍对用户可见(如在它之上有另一个透明的Activity或Toast、AlertDialog等弹出窗口时)它处于暂停状态。暂停的Activity仍然是存活状态(它保留着所有的状态和成员信息并保持和窗口管理器的连接),但是当系统内存极小时可以被系统杀掉
+
+3.      停止(Stopped)状态
+
+完全被另一个Activity遮挡时处于停止状态,它仍然保留着所有的状态和成员信息。只是对用户不可见,当其他地方需要内存时它往往被系统杀掉
+
+4.      非活动（Dead）状态
+
+Activity 尚未被启动、已经被手动终止，或已经被系统回收时处于非活动的状态，要手动终止Activity，可以在程序中调用"finish"方法。
+
+如果是（按根据内存不足时的回收规则）被系统回收，可能是因为内存不足了
+
+内存不足时，Dalvak 虚拟机会根据其内存回收规则来回收内存：
+
+      1. 先回收与其他Activity 或Service/Intent Receiver 无关的进程(即优先回收独
+
+立的Activity)因此建议,我们的一些(耗时)后台操作，最好是作成Service的形式
+
+      2.不可见(处于Stopped状态的)Activity
+
+      3.Service进程(除非真的没有内存可用时会被销毁)
+
+      4.非活动的可见的(Paused状态的)Activity
+
+      5.当前正在运行（Active/Running状态的）Activity
+
+ 
+
+2>  7个重要方法,当Activity从一种状态进入另一状态时系统会自动调用下面相应的方
+
+法来通知用户这种变化
+
+当Activity第一次被实例化的时候系统会调用,
+
+整个生命周期只调用1次这个方法
+
+通常用于初始化设置: 1、为Activity设置所要使用的布局文件2、为按钮绑定监听器等静态的设置操作
+
+      onCreate(Bundle savedInstanceState);
+
+      
+
+当Activity可见未获得用户焦点不能交互时系统会调用
+
+      onStart();
+
+ 
+
+当Activity已经停止然后重新被启动时系统会调用
+
+      onRestart();
+
+      
+
+当Activity可见且获得用户焦点能交互时系统会调用
+
+      onResume();
+
+      
+
+当系统启动另外一个新的Activity时,在新Activity启动之前被系统调用保存现有的Activity中的持久数据、停止动画等,这个实现方法必须非常快。当系统而不是用户自己出于回收内存时，关闭了activity 之后。用户会期望当他再次回到这个activity 的时候，它仍保持着上次离开时的样子。此时用到了onSaveInstanceState()，方法onSaveInstanceState()用来保存Activity被杀之前的状态,在onPause()之前被触发,当系统为了节省内存销毁了Activity(用户本不想销毁)时就需要重写这个方法了,当此Activity再次被实例化时会通过onCreate(Bundle savedInstanceState)将已经保存的临时状态数据传入因为onSaveInstanceState()方法不总是被调用,触发条件为(按下HOME键,按下电源按键关闭屏幕,横竖屏切换情况下),你应该仅重写onSaveInstanceState()来记录activity的临时状态，而不是持久的数据。应该使用onPause()来存储持久数据。
+
+      onPause();
+
+ 
+
+当Activity被新的Activity完全覆盖不可见时被系统调用
+
+      onStop();
+
+      
+
+当Activity(用户调用finish()或系统由于内存不足)被系统销毁杀掉时系统调用,（整个生命周期只调用1次）用来释放onCreate ()方法中创建的资源,如结束线程等
+
+      onDestroy();
+
+      
+
+3>  3个嵌套循环
+
+             1.Activity完整的生命周期:从第一次调用onCreate()开始直到调用onDestroy()结束
+
+             2.Activity的可视生命周期:从调用onStart()到相应的调用onStop()
+
+                    在这两个方法之间,可以保持显示Activity所需要的资源。如在onStart()中注册一个广播接收者监听影响你的UI的改变,在onStop() 中注销。
+
+             3.Activity的前台生命周期:从调用onResume()到相应的调用onPause()。
+
+             
+
+      举例说明:
+
+例1：有3个Acitivity,分别用One,Two(透明的),Three表示,One是应用启动时的主Activity
+
+      启动第一个界面Activity One时,它的次序是
+
+             onCreate (ONE) - onStart (ONE) - onResume(ONE)
+
+      点"打开透明Activity"按钮时,这时走的次序是
+
+             onPause(ONE) - onCreate(TWO) - onStart(TWO) - onResume(TWO)
+
+      再点back回到第一个界面,Two会被杀这时走的次序是
+
+             onPause(TWO) - onActivityResult(ONE) - onResume(ONE) - onStop(TWO) - onDestroy(TWO)
+
+      点"打开全屏Activity"按钮时,这时走的次序是
+
+             onPause(ONE) - onCreate(Three) - onStart(Three) - onResume(Three) - onStop(ONE)
+
+      再点back回到第一个界面,Three会被杀这时走的次序是
+
+             onPause(Three) - onActivityResult(ONE) - onRestart(ONE) - onStart(ONE)- onResume(ONE) - onStop(Three) - onDestroy(Three)
+
+      再点back退出应用时,它的次序是
+
+             onPause(ONE) - onStop(ONE) - onDestroy(ONE)           
+
+ 1、不设置Activity的android:configChanges时，切屏会重新调用各个生命周期，切横屏时会执行一次，切竖屏时会执行两次
+
+2、设置Activity的android:configChanges="orientation"时，切屏还是会重新调用各个生命周期，切横、竖屏时只会执行一次
+
+3、设置Activity的android:configChanges="orientation|keyboardHidden"时，切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法
+
+ 
+总结一下整个Activity的生命周期
+
+补充一点，当前Activity产生事件弹出Toast和AlertDialog的时候Activity的生命周期不会有改变
+
+Activity运行时按下HOME键(跟被完全覆盖是一样的)：onSaveInstanceState --> onPause --> onStop，再次进入激活状态时： onRestart -->onStart--->onResume
+
+10.  BroadcastReceive广播接收器生命周期见图：
+
+生命周期只有十秒左右，如果在 onReceive() 内做超过十秒内的事情，就会报ANR(Application No Response) 程序无响应的错误信息
+
+它的生命周期为从回调onReceive()方法开始到该方法返回结果后结束
+Service完整的生命周期:从调用onCreate()开始直到调用onDestroy()结束
+
+Service有两种使用方法：
+
+1>以调用Context.startService()启动，而以调用Context.stopService()结束
+
+2>以调用Context.bindService()方法建立，以调用Context.unbindService()关闭
+
+service重要的生命周期方法
+
+当用户调用startService （）或bindService（）时，Service第一次被实例化的时候系统会调用,整个生命周期只调用1次这个方法，通常用于初始化设置。注意：多次调用startService（）或bindService（）方法不会多次触发onCreate（）方法
+
+void onCreate()
+当用户调用stopService()或unbindService（）来停止服务时被系统调用,（整个生命周期只调用1次）用来释放onCreate()方法中创建的资源
+
+void onDestroy()
+通过startService()方法启动的服务
+
+      初始化结束后系统会调用该方法，用于处理传递给startService()的Intent对象。如音乐服务会打开Intent 来探明将要播放哪首音乐，并开始播放。注意：多次调用startService（）方法会多次触发onStart（）方法
+
+void onStart(Intent intent)
+通过bindService ()方法启动的服务
+
+      初始化结束后系统会调用该方法，用来绑定传递给bindService 的Intent 的对象。注意：多次调用bindService（）时，如果该服务已启动则不会再触发此方法
+
+IBinder onBind(Intent intent)
+用户调用unbindService()时系统调用此方法，Intent 对象同样传递给该方法
+
+boolean onUnbind(Intent intent)
+如果有新的客户端连接至该服务，只有当旧的调用onUnbind()后，新的才会调用该方法
+
+void onRebind(Intent intent)
+补充：onCreate(Bundle savedInstanceState)与onSaveInstanceState(Bundle savedInstanceState)配合使用，见如下代码，达到显示activity被系统杀死前的状态
+引发activity摧毁和重建的其他情形
+
+除了系统处于内存不足的原因会摧毁activity之外, 某些系统设置的改变也会导致activity的摧毁和重建. 例如改变屏幕方向(见上例), 改变设备语言设定, 键盘弹出等.
+
+ 
