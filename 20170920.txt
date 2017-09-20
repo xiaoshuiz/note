@@ -1,0 +1,122 @@
+1.接口是对一类事物的属性和行为更高层次的抽象。对修改关闭，对扩展开放，接口是对开闭原则的一种体现。所以接口的属性用 public static final 修饰接口中默认修饰变量属性用：public static final；而默认方法的修饰符是：public abstract。
+
+2.子类继承父类的所有方法，只是有一些无法调用
+
+3.sleep和wait的区别有：
+  1，这两个方法来自不同的类分别是Thread和Object
+  2，最主要是sleep方法没有释放锁，而wait方法释放了锁，使得敏感词线程可以使用同步控制块或者方法。
+  3，wait，notify和notifyAll只能在同步控制方法或者同步控制块里面使用，而sleep可以在
+    任何地方使用
+   synchronized(x){
+      x.notify()
+     //或者wait()
+   }
+   4,sleep必须捕获异常，而wait，notify和notifyAll不需要捕获异常
+
+4.下面哪一项不是加载驱动程序的方法？
+通过DriverManager.getConnection方法加载（这一项不是）
+调用方法 Class.forName
+通过添加系统的jdbc.drivers属性
+通过registerDriver方法注册
+DriverManager.getConnection发生呢蝴蝶是一个connection对象，是在加载驱动之后才能进行的。
+
+5.final关键词修饰一个变量时，是指引用变量不能变，引用变量所指向的对象中的内容还是可以变得。
+
+6.LinearLayout是线性布局，RelativeLayou是相对布局，这两种是最常用的布局。五种基本布局里，FrameLayout是帧布局，D选项的TableLayout是表格布局，还有一种AbsoluteLayout（绝对布局）。BorderLayout是java中使用的边界布局，不在android布局中。
+
+7.android默认使用dp为像素单位，字号为sp单位。
+
+8.Dalvik和Java运行环境的区别：
+	1：Dalvik主要是完成对象生命周期管理，堆栈管理，线程管理，安全和异常管理，以及垃圾回收等等重要功能。 　　
+	2：Dalvik负责进程隔离和线程管理，每一个Android应用在底层都会对应一个独立的Dalvik虚拟机实例，其代码在虚拟机的解释下得以执行。 　　
+	3：不同于Java虚拟机运行java字节码，Dalvik虚拟机运行的是其专有的文件格式Dex 　　	4:dex文件格式可以减少整体文件尺寸，提高I/o操作的类查找速度。 　　
+	5:odex是为了在运行过程中进一步提高性能，对dex文件的进一步优化。 　　
+	6：所有的Android应用的线程都对应一个Linux线程，虚拟机因而可以更多的依赖操作系统的线程调度和管理机制 　　
+	7：有一个特殊的虚拟机进程Zygote，他是虚拟机实例的孵化器。它在系统启动的时候就会产生，它会完成虚拟机的初始化，库的加载，预制类库和初始化的操作。如果系统需要一个新的虚拟机实例，它会迅速复制自身，以最快的数据提供给系统。对于一些只读的系统库，所有虚拟机实例都和Zygote共享一块内存区域。
+所以androiddvm的进程和linux的进程，以及应用程序的进程为同一个概念。
+
+
+8.一个text view的style中定义了text color属性，text view本身也设置了text color属性，那么textview本身定义的优先级较高。
+
+9.android动画
+下面哪一项不属于android的动画类型？
+Tween
+Alpha
+Frame
+Animation
+解释：A、C很明显是android 动画的两种类型，而
+B属于Tween动画的一种。
+
+Tween（渐变动画）包含：alpha和scale
+Frame（画面转换动画）包含：translate和rotate
+
+1、帧动画(Frame)所涉及到的Java对象有：AnimationDrawable
+2、补间动画(Tween)所涉及到的Java对象有：AlphaAnimation（渐变动画）、ScaleAnimation（缩放动画）、TranslateAnimation（位移动画）、RotateAnimation（旋转动画）
+3、属性动画（Android 3.0之后推出的）所涉及到的Java对象有：ValueAnimator、ObjectAnimator
+Animation主要有两种动画模式：
+
+一种是tweened animation(渐变动画)
+
+XML中	JavaCode
+alpha	AlphaAnimation
+scale	ScaleAnimation
+ 
+
+ 
+
+ 
+
+一种是frame by frame(画面转换动画) 
+
+XML中	JavaCode
+translate	TranslateAnimation
+rotate	RotateAnimation
+
+10.在下列Android四大组件的回调函数中哪些是在UI主线程执行的呢？
+Activity的onCreate()
+IntentService的onHandleIntent()
+BroadcastReceive的onReceive()
+ContentProvide的query()
+答案是 ABCD 都在主线中回调的因为是在且因为在主线中回调的缘故，这些方法里面不能做太过耗时的操作，这样会引起界面卡顿。
+
+11.在Android中使用IBinder进行IPC通讯时，能够传递下列哪些数据？
+正确答案: A B C   你的答案: A B D (错误)
+
+Parcleable
+Serializable
+Bundle
+CharSequence
+CharSequence 是一个接口，其子类不一定会序列化，比如CharArray 。
+
+12.状态栏通知Notification、NotificationManager
+NotificationManager ：  是状态栏通知的管理类，负责发通知、清楚通知等。
+NotificationManager 是一个系统Service，必须通过 getSystemService()方法来获取。
+[java] view plain copy
+NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);  
+ 
+ 
+ 
+Notification：是具体的状态栏通知对象，可以设置icon、文字、提示声音、振动等等参数。
+ 
+下面是设置一个通知需要的基本参数：
+ 
+An icon  (通知的图标)
+A title and expanded message  (通知的标题和内容)
+A PendingIntent   (点击通知执行页面跳转)
+ 
+可选的设置：
+ 
+A ticker-text message (状态栏顶部提示消息)
+An alert sound    (提示音)
+A vibrate setting  (振动)
+A flashing LED setting  (灯光)
+等等
+
+13.复制的效率
+System.arraycopy>clone>Arrays.copyOf>for循环
+这里面在System类源码中给出了arraycopy的方法，是native方法，也就是本地方法，肯定是最快的。而Arrays.copyOf(注意是Arrays类，不是Array)的实现，在源码中是调用System.arraycopy的，多了一个步骤，肯定就不是最快的。
+
+14.bundle类似于map 采用的也是键-值的存储方法。
+
+15.Ibinder介面实现IPC线程之间通讯   还有aidl介面
+当service经常被远程调用时，我们常常用到aidl来定一个接口供service和client来使用，这个其实就是使用Binder机制的IPC通信。当client bind service成功之后，系统AM会调用回调函数onServiceConnected将service的IBinder传递给client， client再通过调用aidl生成的asInterface()方法获得service的调用接口，此时一个bind过程结束了，我们在client端就可以远程调用service的方法了。
