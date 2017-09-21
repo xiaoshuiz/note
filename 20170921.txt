@@ -1,0 +1,49 @@
+1.将一个Activity设置成窗口的样式，只需设置Theme
+
+	1.在res/value文件夹下的style.xml文件中加入如下代码：
+[java] view plaincopy在CODE上查看代码片  派生到我的代码片
+<style name= "Theme.FloatActivity"  parent= "android:style/Theme.Dialog" >  
+    <!-- float_box为我们定义的窗口背景 ，这个不是必须的-->  
+    <item name="android:windowBackground" > @drawable /float_box</item>  
+</style>  
+	2.在res/drawable文件夹下新建float_box.xml文件，代码如下： 
+
+
+[java] view plaincopy在CODE上查看代码片  派生到我的代码片
+<?xml version= "1.0"  encoding= "utf-8" ?>  
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >  
+    <solid android:color="#ffffff"  />  
+    <stroke android:width="3dp"  android:color= "#ff000000"  />  
+    <corners android:radius="3dp"  />  
+    <padding android:left="10dp"  android:top= "10dp"  android:right= "10dp"  android:bottom= "10dp"  />  
+</shape>  
+	3.在AndroidMainifest.xml中Activity的声明中加入
+
+
+[java] view plaincopy在CODE上查看代码片  派生到我的代码片
+android:theme= "@style/Theme.FloatActivity"   
+
+图中显示了一个activity启动另一个activity的效果，布局文件是同一个。其中被启动的activity2是以对话框样式显示，不完全覆盖住启动它的activit1，类似alertDialog。
+    这与普通的activity不同，默认情况下，activity2会完全遮住activity1，启动activity2后，会调用activity1的onStop方法，而这种以对话框样式显示的activity不会。（详见Activity的生命周期）
+
+2.下列关于 Android 数字签名描述错误的是：
+正确答案: C   你的答案: B (错误)
+
+A.所有的应用程序都必须有数字证书，Android系统不会安装一个没有数字证书的应用程序
+B.Android程序包使用的数字证书可以是自签名的，不需要一个权威的数字证书机构签名认证
+C.如果要正式发布一个Android程序，可以使用集成开发工具生成的调试证书来发布。
+D.数字证书都是有有效期的，Android只是在应用程序安装的时候才会检查证书的有效期。如果程序已经安装在系统中，即使证书过期也不会影响程序的正常功能。
+解析：
+C，必须要使用一个合适的私钥生成的数字证书来给程序签名，而不能使用adt插件或者ant工具生成的调试证书来发布
+
+3.Broadcast Receiver是一个专注于接收广播通知消息，并做出对应处理的组件。下列说法正确的是（ ）
+正确答案: A B D   你的答案: A C D (错误)
+
+A.BroadcastReceiver 是对发送出来的广播进行过滤接收并响应的一类组件
+B.每次广播被接收后会重新创建BroadcastReceiver对象，并在onReceiver方法中执行完时销毁
+C.如果需要在BroadcastReceiver中执行耗时的操作，可以通过Intent启动Service来完成，并同时绑定Service
+D.定义广播接收器类需要继承BroadcastReceiver基类，并且必须要重写onReceive()方法
+解析：
+由于BroadcastReceiver本质上是一种监听器，所以创建BroadcastReceiver的方法也非常简单，只需要创建一个BroadcastReceiver的子类然后重写onReceive (Context context, Intentintent)方法即可。
+BroadcastReceiver的生命周期，从对象调用它开始，到onReceiver方法执行完成之后结束。另外，每次广播被接收后会重新创建BroadcastReceiver对象，并在onReceiver方法中执行完就销毁，如果BroadcastReceiver的onReceiver方法中不能在10秒内执行完成，Android会出现ANR异常。所以不要在BroadcastReceiver的onReceiver方法中执行耗时的操作。
+如果需要在BroadcastReceiver中执行耗时的操作，可以通过Intent启动Service来完成。但不能绑定Service。直接用intent启动Service，这个Service也是默认在UI线程啊，应该是启动IntentService可以执行耗时任务，因为它可以开辟子线程
