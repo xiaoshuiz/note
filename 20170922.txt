@@ -1,0 +1,76 @@
+1.以下适合做客户端数据持久化储存的数据的有：
+正确答案: B D   你的答案: B (错误)
+
+redis
+localStorage
+sessionStorage
+userData
+解析：
+答案是 BD连个选项，b选项localstorage 代表本地存储，这个又可以分为手机存储和内存卡存储，这两种方式都是持久性保存，D选项UserData 代表用户的数据这个也可以进行保存，这个一般存储在用户的手机存储中。redis是一个开源使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库。所以A选项中redis数据就是一个干扰项，直接排除。
+
+2.关于Activity生命周期事件回调函数的说法正确的是（ ）
+正确答案: A D   你的答案: A B C (错误)
+
+onCreate()方法在Activity第一次被创建时调用
+onStart()方法在Activity开始和用户交互，用户可输入信息时调用
+onRestart()方法在系统重新启动前一个Activity时调用
+onStop()方法在Activity对用户不可见时调用
+
+3.下列哪些情况下系统会程序抛出异常，强制退出
+正确答案: B C   你的答案: A B C (错误)
+
+应用运行时，Main线程进行了耗时操作
+应用运行时抛出了OutOfMemoryError
+应用运行时抛出了RuntimeException
+应用运行时，用户操作过于频繁
+解析：AD：产生ANR，程序没有响应，有可能程序会再次响应
+BC：程序抛出异常，会强制退出
+FC(Force close)
+    原因：
+         1.Error
+         OOM(out of memory error)
+         StackOverFlowError
+         2.RuntimeException
+
+4.使用SimpleAdapter作为 ListView的适配器，行布局中支持下列哪些组件？
+正确答案: A C D   你的答案: A D (错误)
+
+TextView
+ProgressBar
+CompoundButton
+ImageView
+解析：
+根据SimpleAdapter的源码可以知道，使用SimpleAdapter作为适配器是，会按照如下顺序判断View:
+ 
+	1、该view是否实现checkable接口
+ 
+	2、该view是否是TextView
+	 
+	3、该view是否是ImageView
+ 
+如果以上三种类型都不是，就会抛出IllegalStateExeception
+compoundbutton实现了Checkable接口的按钮，因此也在入选范围内。
+
+5.在 Android 中， 在屏幕密度为160时， 1pt 大概等于__sp
+正确答案: B   你的答案: A (错误)
+
+1.22
+2.22
+2.12
+1.12
+解析： 在 Android 中，  1pt 大概等于 2.22sp以上供参考，
+      与分辨率无关的度量单位可以解决这一问题。Android支持下列所有单位。 
+       px（像素）：屏幕上的点。 
+       in（英寸）：长度单位。 
+       mm（毫米）：长度单位。 
+       pt（磅）：1/72英寸。 
+       dp（与密度无关的像素）：一种基于屏幕密度的抽象单位。在每英寸160点的显示器上，1dp = 1px。 
+       dip：与dp相同，多用于android/ophone示例中。 
+       sp（与刻度无关的像素）：与dp类似，但是可以根据用户的字体大小首选项进行缩放。
+
+ 分辨率:整个屏是多少点，比如800x480，它是对于软件来说的显示单位，以px为单位的点。 density(密度)值表示每英寸有多少个显示点，与分辨率是两个概念。apk的资源包中，  
+
+       当屏幕density=240时使用hdpi标签的资源  
+       当屏幕density=160时，使用mdpi标签的资源  
+       当屏幕density=120时，使用ldpi标签的资源。  
+       一般android设置长度和宽度多用dip,设置字体大小多用sp. 在屏幕密度为160，1dp=1px=1dip, 1pt = 160/72 sp 1pt = 1/72 英寸.当屏幕密度为240时，1dp=1dip=1.5px. 
