@@ -1,0 +1,104 @@
+1.使用Toast提示时,关于提示时长,下面说法正确的是( ).
+正确答案: A   你的答案: D (错误)
+
+显示时长默认只有2种设置
+可以自定义显示时长
+传入30时,提示会显示30秒钟
+当自定义显示时长时,比如传入30,程序会抛出异常
+解析：
+A.显示时长只有2种设置
+Toast.makeText(this, str, Toast.LENGTH_LONG).show();
+toast只能设置为 2s和3.5s ，其它的值都无效，API的文档虽然写的第三个参数是时间，但是Framework里作了重定义，限定了 2s和3.5s 这两个值 ，对应 Toast.LENGTH_SHORT和Toast.LENGTH_LONG，实现方式在NotificationManagerService.java的scheduleTimeoutLocked()这个函数里。
+
+Toast的默认显示时间有两个，分别为Toast.LENGTH_SHORT和Toast.LENGTH_LONG
+
+2.有关Activity生命周期描述正确的是
+正确答案: B C   你的答案: A B C (错误)
+
+设置Activity的android:screenOrientation="portrait"属性时，切换屏幕横纵方向时不会重新调用各个生命周期，只会执行onConfigurationChanged方法
+未设置Activity的android:configChanges属性，切换屏幕横纵方向时会重新调用onCreate()方法
+当再次启动某个launchMode设置为singletask的Activity，它的onNewIntent()方法会被触发
+用户正在操作某个Activity，这时如果其他应用程序需要内存，系统会将用户当前操作的Activity强制关闭
+解析：
+A 设置Activity的android:screenOrientation="portrait"属性时,无法切换横竖屏，因此不但不会重新调用各个生命周期方法，而且onConfigurationChanged()方法也不会执行。
+ 
+B 未设置Activity的android:configChanges属性，API上这样说"the activity will be restarted if any of these configuration changes happen in the system.";如何配置有改变，就会重启activity
+ 
+C launchMode为singleTask的时候，通过Intent启到一个Activity, 如果系统已经存在一个实例，系统就会将请求发送到这个实例上， 但这个时候，系统就不会再调用通常情况下我们处理请求数据的onCreate方法，而是调用onNewIntent方法
+ 
+D 用户正在操作某个Activity，这时如果其他应用程序需要内存。 此时的Activity是Foreground process,应该按照Empty process，Background process，Service process，Visible process顺序kill，最后才是前台进程。
+
+3.下列关于数据持久化的描述正确的有
+正确答案: B D   你的答案: B C D (错误)
+
+在内存中缓存多个Bitmap对象是一种数据持久化方法
+SQLite数据库文件可以保存在SD卡中
+ContentProvider的主要目的是为了将Android应用的数据持久化
+数据持久化就是将内存的数据保存到外存
+A：错。这种类似于内存缓存(LRUCache)不是数据持久化，否则也不会有DiskLruCache
+B 正确 之前就是把db文件放到内存卡中 进行读取的 然后再用SQLiteDatabase 操作
+C：错。ContentProvider的目的是对外暴露数据供其他程序查询
+
+Android数据持久化有五种方式：
+1、SharedPreferences
+2、内部存储（例如通过openFileOutput()打开一个文件输入输出流）
+3、SQLite Database
+4、网络连接（将数据存储到服务器上）
+5、外部存储（SD卡）
+
+4.下面哪条语句可以构造正确的对话框( ).
+正确答案: B C   你的答案: A (错误)
+
+AlertDialog dialog = new AlertDialog(context);
+AlertDialog.Builder builder = new AlertDialog.Builder(context);
+ProgressDialog dialog = new ProgressDialog(context);
+ProgressDialog.Builder builder = new ProgressDialog.Builder(context);
+解析：
+B:
+AlertDialog的构造方法被声明为protected
+，所以不能直接使用new关键字来创建AlertDialog类的对象实例。要想创建AlertDialog对话框，需要使用Builder类，该类是AlertDialog类中定义的一个内嵌类。因此必须创建AlertDialog.Builder类的对象实例，然后再调用show()来显示对话框。
+例如： 
+       AlertDialog.Builder db= new Builder(this);
+                    db..create().show();
+-------------------------------------
+C:
+progressdialog 的构造方法被声明为public
+ProgressDialog pDialog;//进度条对话框对象 
+pDialog = new ProgressDialog(Context); //构造进度条对话框 
+ 
+5.下面是属于GLSurFaceView特性的是?
+正确答案: A B C   你的答案: B C D (错误)
+
+管理一个surface，这个surface就是一块特殊的内存，能直接排版到android的视图view上。
+管理一个EGL display，它能让opengl把内容渲染到上述的surface上。
+让渲染器在独立的线程里运作，和UI线程分离。
+可以直接从内存或者DMA等硬件接口取得图像数据
+解析：
+一个GLSurfaceView类 , 具有以下特点 :
+1.管理一个平面, 这个平面是一个特殊的内存块 , 它可以和 android 视图系统混合 .
+2.管理一个EGL 显示 , 它能够让 OpenGL 渲染到一个平面 .
+3.接受一个用户提供的实际显示的Renderer 对象 .
+4.使用一个专用线程去渲染从而和UI 线程解耦 .
+5.支持on-demand  和连续的渲染.
+6.可选的包, 追踪 和 / 或者错误检查这个渲染器的 OpenGL 调用 .
+
+6.Activty和Task的启动模式有哪些？
+正确答案: D   你的答案: B (错误)
+
+standard、singleTop
+singleTop、singleTask
+singleTask、singleInstance
+standard、singleTop、singleTask、singleInstance
+解析：
+“拿来主义”standard模式。哪里需要调用我我就去哪里，可以多次实例化，可以几个相同的Activity重叠。
+    “拒绝堆叠”singleTop模式。可以多次实例化，但是不可以多个相同的Activity重叠，当堆栈的顶部为相同的Activity时，会调用onNewIntent函数。
+    “独立门户”singleTask模式。同一个应用中调用该Activity时，如果该Activity没有被实例化，会在本应用程序的Task内实例 化，如果已经实例化，会将Task中其上的Activity销毁后，调用onNewIntent；其它应用程序调用该Activity时，如果该 Activity没有被实例化，会创建新的Task并实例化后入栈，如果已经实例化，会销毁其上的Activity，并调用onNewIntent。一句 话，singleTask就是“独立门户”，在自己的Task里，并且启动时不允许其他Activity凌驾于自己之上。
+    “孤独寂寞”singleInstance模式。加载该Activity时如果没有实例化，他会创建新的Task后，实例化入栈，如果已经存在，直接调用 onNewIntent，该Activity的Task中不允许启动其它的Activity，任何从该Activity启动的其他Activity都将被 放到其他task中，先检查是否有本应用的task，没有的话就创建。
+
+7.当 Activity 被消毁时，如何保存它原来的状态（）？
+实现 Activity 的 onSaveInstanceState（）方法
+
+8.android中有三种菜单
+（1）选项菜单Options menus :一个Activity只能有一个选项菜单，在按下Menu键时，显示在屏幕下方。
+（2）上下文菜单Context menus :为Activity中的任何一个视图注册一个上下文菜单，“长按”出现。
+（3）弹出式菜单Popup menus :依赖于Activity中的某个一个视图。
