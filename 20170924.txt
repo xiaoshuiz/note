@@ -1,0 +1,145 @@
+1.在一个布局文件中,对一个EditText进行设置,以下哪项设置能实现输入框默认提示内容的效果( ).
+android：hint
+
+2.以下代码中intent.setClass(ActivityTest.this , NextActivity.class)中this是指（） 
+
+Public class ActivityTest extends Activity{
+    Private Button button1；
+    /**Called when the activity is first created、*/
+    @Override
+    Public void onCreate(Bundle savedlnstanceState){
+        Super.onCreate(savedlntanceState);
+        setContentView(R.layout.main);
+        button1=(Button)findViewByld(R.id.button1);
+        button1.setOnClickListener(new OnClickListener(){
+             @Override
+             Public void onClick(View v){
+                 Intent intent =new Intent();
+                 Intent.setClass(ActivityTest.this,nextActivity.class);
+                 startActivity(intent);             
+             }
+         }
+} }); …… 
+正确答案: A   你的答案: D (错误)
+
+ActivityTest
+NextActivity
+OnClickListener
+Activity
+解析：该题目中，this是指类实例的引用；
+this关键字是在类内部对自身的一种引用，可以方便的调用自身属性和方法；所以选择A
+
+3.下列属于android常用的跨进程通信工具有：
+正确答案: A B   你的答案: A B C (错误)
+
+broadcast
+AIDL
+handler
+解析：handler是跨线程！
+
+4.RemoteView在哪些功能中使用
+正确答案: B D   你的答案: C D (错误)
+
+Toast
+AppWidget
+ListView
+Notification
+解析：到目前为止，我发现RemoteView会用在两个地方： 一个是在AppWidget , 另外一个是在Notification.   
+
+先从官方对他的定义来看：  
+RemoteView--  
+A class that describes a view hierarchy that can be displayed in another process. The hierarchy is inflated from a layout resource file, and this class provides some basic operations for modifying the content of the inflated hierarchy.  
+
+RemoteView描述一个view,而这个view是在另外一个进程显示的。它inflate于layout资源文件。并且提供了可以修改过view内容的一些简单基础的操作。  
+
+从这个定义我们就知道RemoteView是用来描述一个垮进程显示的view。 从而你就会明白为什么AppWidget和Nofication需要用到它了。 
+
+5.Android dvm的进程和Linux的进程，以下说法是错误的是
+正确答案: D   你的答案: C (错误)
+
+它们都是进程的一种
+dvm是android的虚拟机
+linux的进程是程序的具体实现，是执行程序的过程
+dvm中可以创建多个进程来处理应用间的同步问题 
+解析：
+D
+每一个Android应用程序都在它自己的进程中运行，都拥有一个独立的Dalvik虚拟机实例,每一个DVM都是在Linux 中的一个进程 
+
+6.下列对AsyncTask的描述，哪些是正确的？
+正确答案: A B C   你的答案: A C D (错误)
+
+A.onProgressUpdate()方法是在主线程中执行的
+B.如果同时执行多个AsyncTask的话，他们默认是串行执行
+C.AsyncTask的实例应在UI thread中创建实例
+AsyncTask内部默认的线池是也是通过java.util.concurrentExecuttors.newFixedThreadPool创建的
+解析：
+答案是 ABC  在android 中主线程是ui线程一切的界面操作都是在主线中完成的，如果在非主线程中操作ui将会报错。
+          B 同时执行多个AsyncTask默认是串行执行的。
+          C AsyncTask必须在UI线程中创建。
+          D 内部默认的线程是由 SerialExecutor创建 。
+
+7.下列哪些情况下，系统可能会弹出ANR对话框
+正确答案: A C   你的答案: A B C (错误)
+
+在Activity中，Main线程消息队列中的消息在5秒内没有得到响应
+在Service中，onStartCommand()方法执行超过5秒
+在BroadcastReceiver中，onReceive()方法执行时间超过10秒
+在启动的新线程中，run()方法执行时间超过5秒
+解析：
+在Android上，如果你的应用程序有一段时间响应不够灵敏，系统会向用户显示一个对话框，这个对话框称作应用程序无响应（ANR：Application Not Responding）对话框。用户可以选择“等待”而让程序继续运行，也可以选择“强制关闭”。
+默认情况下，在android中Activity的最长执行时间是5秒，BroadcastReceiver的最长执行时间则是10秒。超出就会提示应用程序无响应（ANR：Application Not Responding）对话框。
+三种常见类型
+1： KeyDispatchTimeout(5 seconds) -- 主要类型
+按键或触摸事件在特定时间内无响应
+2 ： BroadcastTimeout(10 seconds)
+BroadcastReceiver在特定时间内无法处理完成
+3： ServiceTimeout(20 seconds) -- 小概率类型
+Service在特定的时间内无法处理完成
+
+8.使用AIDL完成远程service方法调用下列说法不正确的是
+正确答案: A   你的答案: C (错误)
+
+aidl对应的接口名称不能与aidl文件名相同
+aidl的文件的内容类似java代码
+创建一个Service（服务），在服务的onBind(Intent intent)方法中返回实现了aidl接口的对象
+aidl对应的接口的方法前面不能加访问权限修饰符
+解析：
+AIDL:Android Interface Definition Language,即Android接口定义语言。
+Android 使用AIDL提供公开服务接口，使得不同进程间可以相互通信。
+
+建立AIDL服务要比建立普通的服务复杂一些，具体步骤如下：
+（1）在Eclipse Android工程的Java包目录中建立一个扩展名为aidl的文件。该文件的语法类似于Java代码，但会稍有不同。
+（2）如果aidl文件的内容是正确的，ADT会自动生成一个Java接口文件（*.java）。
+（3）建立一个服务类（Service的子类）。
+（4）实现由aidl文件生成的Java接口。
+（5）在AndroidManifest.xml文件中配置AIDL服务，尤其要注意的是，<action>标签中android:name的属性值就是客户端要引用该服务的ID，也就是Intent类的参数值。
+
+9.结构化程序设计的思想包括：
+1.自顶向下
+2.逐步求精
+3.模块化
+4.限制使用goto语句
+
+10.工厂模式主要是为创建对象提供过渡接口，以便将创建对象的具体过程屏蔽隔离起来，达到提高灵活性的目的。 
+工厂模式可以分为三类： 
+1）简单工厂模式（Simple Factory） 
+2）工厂方法模式（Factory Method） 
+3）抽象工厂模式（Abstract Factory） 
+ 这三种模式从上到下逐步抽象，并且更具一般性。 
+        GOF在《设计模式》一书中将工厂模式分为两类：工厂方法模式（Factory Method）与抽象工厂模式（Abstract Factory）。
+        将简单工厂模式（Simple Factory）看为工厂方法模式的一种特例，两者归为一类。 
+三、区别 
+工厂方法模式：
+一个抽象产品类，可以派生出多个具体产品类。   
+一个抽象工厂类，可以派生出多个具体工厂类。   
+每个具体工厂类只能创建一个具体产品类的实例。
+抽象工厂模式：
+多个抽象产品类，每个抽象产品类可以派生出多个具体产品类。   
+一个抽象工厂类，可以派生出多个具体工厂类。   
+每个具体工厂类可以创建多个具体产品类的实例。   
+区别：
+工厂方法模式只有一个抽象产品类，而抽象工厂模式有多个。   
+工厂方法模式的具体工厂类只能创建一个具体产品类的实例，而抽象工厂模式可以创建多个。
+两者皆可。 
+ 四、简单工厂模式 
+建立一个工厂（一个函数或一个类方法）来制造新的对象。
