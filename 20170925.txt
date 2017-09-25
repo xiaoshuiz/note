@@ -1,0 +1,246 @@
+1.在创建AVD时,下面哪些是不能配置的选项( ).
+正确答案: A   你的答案: B (错误)
+
+蓝牙支持
+屏幕分辨率
+缓存区大小
+SD卡支持
+
+2.android的自动恢复功能能够完成？
+正确答案: D   你的答案: C (错误)
+
+恢复地址簿
+修复丢失的文字信息
+恢复删除的信息
+恢复备份设置和数据来重新安装程序
+
+3.以下适合在客户端做数据持久化存储的数据的有
+正确答案: B D   你的答案: B C D (错误)
+
+redis
+localStorage
+sessionStorage
+userData
+解析：sessionStorage生命周期为当前窗口或标签页，一旦窗口或标签页被永久关闭了，那么所有通过sessionStorage存储的数据也就被清空了。
+所以选B不选C
+
+4.前台进程是Android系统中最重要的进程，在Andriod系统中包含哪些情形（ ）
+正确答案: A B C   你的答案: A C (错误)
+
+Activity正在与用户进行交互
+进程服务正在执行声明中的回调函数
+进程的BroadCastRecevier在执行onRecevie()函数
+当一个Activity被部分遮挡时
+解析：
+前台进程
+用户当前操作所必需的进程。如果一个进程满足以下任一条件，即视为前台进程：
+托管用户正在交互的 Activity（已调用 Activity 的 onResume() 方法）
+托管某个 Service，后者绑定到用户正在交互的 Activity
+托管正在“前台”运行的 Service（服务已调用 startForeground()）
+托管正执行一个生命周期回调的 Service（onCreate()、onStart() 或 onDestroy()）
+托管正执行其 onReceive() 方法的 BroadcastReceiver
+通常，在任意给定时间前台进程都为数不多。只有在内存不足以支持它们同时继续运行这一万不得已的情况下，系统才会终止它们。 此时，设备往往已达到内存分页状态，因此需要终止一些前台进程来确保用户界面正常响应。
+可见进程
+没有任何前台组件、但仍会影响用户在屏幕上所见内容的进程。 如果一个进程满足以下任一条件，即视为可见进程：
+托管不在前台、但仍对用户可见的 Activity（已调用其 onPause() 方法）。例如，如果前台 Activity 启动了一个对话框，允许在其后显示上一 Activity，则有可能会发生这种情况。
+托管绑定到可见（或前台）Activity 的 Service。
+可见进程被视为是极其重要的进程，除非为了维持所有前台进程同时运行而必须终止，否则系统不会终止这些进程。
+服务进程
+正在运行已使用 startService() 方法启动的服务且不属于上述两个更高类别进程的进程。尽管服务进程与用户所见内容没有直接关联，但是它们通常在执行一些用户关心的操作（例如，在后台播放音乐或从网络下载数据）。因此，除非内存不足以维持所有前台进程和可见进程同时运行，否则系统会让服务进程保持运行状态。
+后台进程
+包含目前对用户不可见的 Activity 的进程（已调用 Activity 的 onStop() 方法）。这些进程对用户体验没有直接影响，系统可能随时终止它们，以回收内存供前台进程、可见进程或服务进程使用。 通常会有很多后台进程在运行，因此它们会保存在 LRU （最近最少使用）列表中，以确保包含用户最近查看的 Activity 的进程最后一个被终止。如果某个 Activity 正确实现了生命周期方法，并保存了其当前状态，则终止其进程不会对用户体验产生明显影响，因为当用户导航回该 Activity 时，Activity 会恢复其所有可见状态。 有关保存和恢复状态的信息，请参阅 Activity文档。
+空进程
+不含任何活动应用组件的进程。保留这种进程的的唯一目的是用作缓存，以缩短下次在其中运行组件所需的启动时间。 为使总体系统资源在进程缓存和底层内核缓存之间保持平衡，系统往往会终止这些进程。
+
+5.Intent传递数据时，下列的数据类型哪些可以被传递
+正确答案: A B C D   你的答案: A C D (错误)
+
+Serializable
+CharSequence
+Parcelable
+Bundle
+解析：
+Serializable :将 Java 对象序列化为二进制文件的 Java 序列化技术是 Java系列技术中一个较为重要的技术点，在大部分情况下，开发人员只需要了解被序列化的类需要实现 Serializable 接口，使用ObjectInputStream 和 ObjectOutputStream 进行对象的读写。
+charsequence  :
+在JDK1.4中，引入了CharSequence接口，实现了这个接口的类有：CharBuffer、String、StringBuffer、StringBuilder这个四个类。
+CharBuffer为nio里面用的一个类，String实现这个接口理所当然，StringBuffer也是一个CharSequence，StringBuilder是Java抄袭C#的一个类，基本和StringBuffer类一样，效率高，但是不保证线程安全，在不需要多线程的环境下可以考虑。
+提供这么一个接口，有些处理String或者StringBuffer的类就不用重载了。但是这个接口提供的方法有限，只有下面几个：charat、length、subSequence、toString这几个方法，感觉如果有必要，还是重载的比较好，避免用instaneof这个操作符。
+Parcelable  :
+android提供了一种新的类型：Parcel。本类被用作封装数据的容器，封装后的数据可以通过Intent或IPC传递。 除了基本类型以
+外，只有实现了Parcelable接口的类才能被放入Parcel中。
+是GOOGLE在安卓中实现的另一种序列化,功能和Serializable相似,主要是序列化的方式不同
+
+Bundle:Bundle是将数据传递到另一个上下文中或保存或回复你自己状态的数据存储方式。它的数据不是持久化状态。
+
+6.下面是属于GLSurFaceView特性的是?
+正确答案: A B C   你的答案: A B C D (错误)
+
+管理一个surface，这个surface就是一块特殊的内存，能直接排版到android的视图view上。
+管理一个EGL display，它能让opengl把内容渲染到上述的surface上。
+让渲染器在独立的线程里运作，和UI线程分离。
+可以直接从内存或者DMA等硬件接口取得图像数据
+
+一个GLSurfaceView类 , 具有以下特点 :
+1.管理一个平面, 这个平面是一个特殊的内存块 , 它可以和 android 视图系统混合 .
+2.管理一个EGL 显示 , 它能够让 OpenGL 渲染到一个平面 .
+3.接受一个用户提供的实际显示的Renderer 对象 .
+4.使用一个专用线程去渲染从而和UI 线程解耦 .
+5.支持on-demand  和连续的渲染.
+6.可选的包, 追踪 和 / 或者错误检查这个渲染器的 OpenGL 调用 .
+
+7.下列选项中符合Java命名规则的标识符是（）
+正确答案: D   你的答案: A (错误)
+
+2japro
+&Class
+const
+_123
+解析：Java 标识符有如下命名规则： 
+由26个英文字母大小写，数字：0-9 符号：_ $ 组成
+标识符应以字母、_ 、$开头。
+标识符不能是关键字。
+Java中严格区分大小写 
+
+8.指出下列程序运行的结果：
+public class Example{
+    String str=new String("tarena");
+    char[]ch={'a','b','c'};
+    public static void main(String args[]){
+        Example ex=new Example();
+        ex.change(ex.str,ex.ch);
+        System.out.print(ex.str+" and ");
+        System.out.print(ex.ch);
+    }
+    public void change(String str,char ch[]){
+   //引用类型变量，传递的是地址，属于引用传递。
+        str="test ok";
+        ch[0]='g';
+    }
+}
+
+正确答案: B   你的答案: D (错误)
+
+tarena and abc
+tarena and gbc
+test ok and abc
+test ok and gbc
+解析：string和char数组都是引用类型，引用类型是传地址的，会影响原变量的值，但是string是特殊引用类型，为什么呢？因为string类型的值是不可变的，为了考虑一些内存，安全等综合原因，把它设置成不可变的; 不可变是怎么实现的？Java在内存中专门为string开辟了一个字符串常量池，用来锁定数据不被篡改，所以题目中函数中的str变量和原来的str已经不是一个东西了，它是一个局部引用，指向一个testok的字符串，随着函数结束，它也就什么都没了，但是char数组是会改变原值的
+
+9.假设 A 类有如下定义，设 a 是 A 类的一个实例，下列语句调用哪个是错误的？（ ）
+class  A{
+static  int  i;
+String  s;
+static  void  method1() {   }
+void  method2()  {   }
+}
+正确答案: D   你的答案: B (错误)
+
+System.out.println(a.i)；
+a.method1();
+A.method1();
+A.method2()
+解析：不能通过类名调用非静态的方法，因为非静态方法的调用需要实例化对象后才能调用
+
+10.下面有关List接口、Set接口和Map接口的描述，错误的是？
+正确答案: A   你的答案: C (错误)
+
+他们都继承自Collection接口
+List是有序的Collection，使用此接口能够精确的控制每个元素插入的位置
+Set是一种不包含重复的元素的Collection
+Map提供key到value的映射。一个Map中不能包含相同的key，每个key只能映射一个value
+解析：Map接口和Collection接口是同一等级的
+Collection
+    -----List
+               -----LinkedList    非同步
+                ----ArrayList      非同步，实现了可变大小的元素数组
+                ----Vector          同步
+                         ------Stack
+    -----Set   不允许有相同的元素
+
+
+Map
+    -----HashTable        同步，实现一个key--value映射的哈希表
+    -----HashMap          非同步，
+    -----WeakHashMap   改进的HashMap，实现了“弱引用”，如果一个key不被引用，则被GC回收
+
+11.list是一个ArrayList的对象，哪个选项的代码填到//todo delete处，可以在Iterator遍历的过程中正确并安全的删除一个list中保存的对象？（）
+Iterator it = list.iterator();
+int index = 0;
+while (it.hasNext())
+{
+    Object obj = it.next();
+    if (needDelete(obj))  //needDelete返回boolean，决定是否要删除
+    {
+        //todo delete
+    }
+    index ++;
+}
+
+正确答案: A   你的答案: C (错误)
+
+it.remove();
+list.remove(obj);
+list.remove(index);
+list.remove(obj,index);
+解析：
+Iterator  支持从源集合中安全地删除对象，只需在 Iterator 上调用 remove() 即可。这样做的好处是可以避免 ConcurrentModifiedException ，当打开 Iterator 迭代集合时，同时又在对集合进行修改。有些集合不允许在迭代时删除或添加元素，但是调用 Iterator 的remove() 方法是个安全的做法。 
+
+12.代码片段： 
+byte b1=1,b2=2,b3,b6; 
+final byte b4=4,b5=6; 
+b6=b4+b5; 
+b3=(b1+b2); 
+System.out.println(b3+b6);
+关于上面代码片段叙述正确的是（）
+正确答案: C   你的答案: A (错误)
+
+输出结果：13
+语句：b6=b4+b5编译出错
+语句：b3=b1+b2编译出错
+运行期抛出异常
+解析：
+被final修饰的变量是常量，这里的b6=b4+b5可以看成是b6=10；在编译时就已经变为b6=10了
+而b1和b2是byte类型，java中进行计算时候将他们提升为int类型，再进行计算，b1+b2计算后已经是int类型，赋值给b3，b3是byte类型，类型不匹配，编译不会通过，需要进行强制转换。
+Java中的byte，short，char进行计算时都会提升为int类型。
+
+13.在 hibernate 开发中，关于 POJO 类对象的状态说法正确的是（）。
+正确答案: A B C   你的答案: B C D (错误)
+
+自由状态（Transient）：实体在内存中自由存在，与数据库中的记录无关
+持久状态（Persistent）：实体处于由Hibernate框架所管理的状态，对应了数据库中的一条记录，同时与某个session实例发生了关联
+游离状态（Detached）：在session 关闭之后,可以使对象从持久状态转换到游离状态。
+不能将对象从游离状态转换成持久态
+解析：见图20170925，游离状态可以通过update saveorupdate lock方法变成持久态。
+
+14.在Java中,下列说法错误的有（ ）
+正确答案: B C D   你的答案: A C D (错误)
+
+数组是一种对象
+数组属于一种原生类
+int number = []{31,23,33,43,35,63};
+数组的大小可以任意改变
+解析：java中的数据类型分类：
+     基本数据类型（或叫做原生类、内置类型）8种：
+                           整数：byte，short，int，long（默认是int类型）
+                           浮点类型： float，double（默认是double类型）
+                           字符类型：char
+                           布尔类型：boolean
+      引用数据类型3种：数组，类，接口
+其中，基本数据类型之间除了boolean，其他数据类型之间可以任意的相互转换（强制转化或默认转换），这个与c++中有点区别。
+个人认为c定义数组的方式是正确的，只不过少了一个分号。java中定义数组有两种方式，一种是int[ ] number，一种是int  number[ ]，推荐第一种，可读性更高。
+选择BCD:
+A：数组是对象，int float char这些基本类型不是对象。关于如何判断基本类型和对象，参考下面的：
+行为：
+基本类型只是一个值，没有任何行为
+对象类型有自己的行为
+内存分配：
+基本类型在栈内分配
+对象在堆内分配
+对象引用保存在栈内
+引用与值：
+基本类型是值类型，仅表示一个值，保存在栈内
+引用类型分两部分，对象引用保存在栈内，对象保存在堆内，
+访问变量，是使用的引用找对象
+
+B:不是，属于引用数据类型，因为声明数组需要分配堆栈空间
+D：大小一旦指定，不能改变
