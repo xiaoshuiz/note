@@ -1,12 +1,11 @@
 1.AddCSV2GraphicsLayer(done)
-2.basemaps£¨done£©
-3.CreateRuntimeGeodatabase£¨done£©
+2.basemaps(done)
+3.CreateRuntimeGeodatabase(done)
 4.Dynamiclayerrenderer(done)
-5.DynamicSublayerReorder(ing)
-6.IdentifyTask
+5.DynamicSublayerReorder(done)
+6.IdentifyTask(ing)
 7.MapLegend
 8.queryTask
-
 9.LocalMBTiles
 10.LocalRasterData
 10.SwitchMaps
