@@ -3,8 +3,8 @@
 3.CreateRuntimeGeodatabase(done)
 4.Dynamiclayerrenderer(done)
 5.DynamicSublayerReorder(done)
-6.IdentifyTask(ing)
-7.MapLegend
+6.IdentifyTask(done)
+7.MapLegend(ing)
 8.queryTask
 9.LocalMBTiles
 10.LocalRasterData
