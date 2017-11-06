@@ -5,7 +5,7 @@
 5.DynamicSublayerReorder(done)
 6.IdentifyTask(done)
 7.MapLegend(done)
-8.queryTask(ing)
-9.LocalMBTiles
+8.queryTask(done)
+9.LocalMBTiles(ing)
 10.LocalRasterData
 10.SwitchMaps
