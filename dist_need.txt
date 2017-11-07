@@ -6,6 +6,6 @@
 6.IdentifyTask(done)
 7.MapLegend(done)
 8.queryTask(done)
-9.LocalMBTiles(ing)
-10.LocalRasterData
-10.SwitchMaps
+9.LocalMBTiles
+10.LocalRasterData(done)
+10.SwitchMaps(ing)
